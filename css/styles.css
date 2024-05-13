@@ -10,13 +10,17 @@
  * Copyright 2011-2020 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
+/*!
+ * Color theme changed --orange: #198ac5;  --primary: #198ac5;
+ */
+
 :root {
   --blue: #007bff;
   --indigo: #6610f2;
   --purple: #6f42c1;
   --pink: #e83e8c;
   --red: #dc3545;
-  --orange: #198ac5;
+  --orange: #00338D;
   --yellow: #ffc107;
   --green: #28a745;
   --teal: #20c997;
@@ -24,7 +28,7 @@
   --white: #fff;
   --gray: #6c757d;
   --gray-dark: #343a40;
-  --primary: #198ac5;
+  --primary: #00338D;
   --secondary: #6c757d;
   --success: #28a745;
   --info: #17a2b8;
