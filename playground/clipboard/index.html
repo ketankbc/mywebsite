@@ -58,12 +58,40 @@
     async function loadClipboard(force=false){if(dirty&&!force)return;try{const res=await fetch(SUPABASE_URL+'/rest/v1/clipboard?id=eq.1&select=content,updated_at',{headers:headers()});if(!res.ok)throw new Error('Unable to load clipboard');const rows=await res.json(),row=rows[0]||{content:'',updated_at:null};textEl.value=row.content||'';countEl.textContent=textEl.value.length+' characters';updatedEl.textContent=formatTime(row.updated_at);dirty=false;setConnected(true)}catch(err){setConnected(false);showNotice(err.message,'error')}}
     async function sha256(value){const data=new TextEncoder().encode(value),hash=await crypto.subtle.digest('SHA-256',data);return Array.from(new Uint8Array(hash)).map(b=>b.toString(16).padStart(2,'0')).join('')}
     function requestPassword(action){pendingAction=action;passwordInput.value='';dialog.showModal();setTimeout(()=>passwordInput.focus(),40)}
-    async function writeClipboard(content,password){const passwordHash=await sha256(password);password='';const res=await fetch(SUPABASE_URL+'/rest/v1/rpc/set_clipboard',{method:'POST',headers:headers({'Content-Type':'application/json'}),body:JSON.stringify({p_content:content,p_password_hash:passwordHash})});if(!res.ok){let message='Save failed';try{const body=await res.json();if(/invalid password/i.test(body.message||''))message='Incorrect password.';else if(body.message)message=body.message}catch(_){}throw new Error(message)}dirty=false;await loadClipboard(true)}
+    async function writeClipboard(content) {
+  const res = await fetch(
+    SUPABASE_URL + '/rest/v1/clipboard?id=eq.1',
+    {
+      method: 'PATCH',
+      headers: headers({
+        'Content-Type': 'application/json',
+        'Prefer': 'return=representation'
+      }),
+      body: JSON.stringify({
+        content: content,
+        updated_at: new Date().toISOString()
+      })
+    }
+  );
+
+  if (!res.ok) {
+    let message = 'Save failed';
+    try {
+      const body = await res.json();
+      if (body.message) message = body.message;
+    } catch (_) {}
+    throw new Error(message);
+  }
+
+  dirty = false;
+  await loadClipboard(true);
+}
     document.getElementById('saveBtn').addEventListener('click',()=>requestPassword('save'));document.getElementById('clearBtn').addEventListener('click',()=>requestPassword('clear'));document.getElementById('refreshBtn').addEventListener('click',()=>{dirty=false;loadClipboard(true)});
     document.getElementById('copyBtn').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(textEl.value);showNotice('Copied to this device clipboard.','ok')}catch(_){textEl.select();document.execCommand('copy');showNotice('Copied to this device clipboard.','ok')}});
     textEl.addEventListener('input',()=>{dirty=true;countEl.textContent=textEl.value.length+' characters';showNotice('Unsaved changes')});
     document.getElementById('cancelPassword').addEventListener('click',()=>{passwordInput.value='';pendingAction=null;dialog.close()});
-    document.getElementById('passwordForm').addEventListener('submit',async e=>{e.preventDefault();let password=passwordInput.value;passwordInput.value='';dialog.close();const action=pendingAction;pendingAction=null;try{showNotice(action==='clear'?'Clearing…':'Saving…');await writeClipboard(action==='clear'?'':textEl.value,password);password='';showNotice(action==='clear'?'Clipboard cleared.':'Clipboard saved.','ok')}catch(err){password='';showNotice(err.message,'error')}});
+    document.getElementById('passwordForm').addEventListener('submit',async e=>{e.preventDefault();let password=passwordInput.value;passwordInput.value='';dialog.close();const action=pendingAction;pendingAction=null;try{showNotice(action==='clear'?'Clearing…':'Saving…');await writeClipboard( action === 'clear' ? '' : textEl.value,
+  password);password='';showNotice(action==='clear'?'Clipboard cleared.':'Clipboard saved.','ok')}catch(err){password='';showNotice(err.message,'error')}});
     loadClipboard(true);setInterval(()=>loadClipboard(false),5000);
   </script>
 </body>
