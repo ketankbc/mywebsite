@@ -64,6 +64,35 @@
       <a class="email-link" href="mailto:ketanchavan@kpmg.com">ketanchavan@kpmg.com <span>↗</span></a>
     </section>
   </main>
+  <div class="playground-shell" id="playgroundShell">
+    <button class="playground-launcher" id="playgroundLauncher" type="button" aria-expanded="false" aria-controls="playgroundPanel">
+      <span class="playground-launcher-icon" aria-hidden="true">✦</span>
+      <span>Playground</span>
+    </button>
+    <aside class="playground-panel" id="playgroundPanel" aria-label="Playground" aria-hidden="true">
+      <div class="playground-panel-head">
+        <div>
+          <p class="playground-kicker">SIDE PROJECTS / 01</p>
+          <h2>Playground</h2>
+          <p>Small things I build, test and ship for fun.</p>
+        </div>
+        <button class="playground-close" id="playgroundClose" type="button" aria-label="Close playground">×</button>
+      </div>
+      <div class="playground-apps">
+        <a class="playground-card" href="playground/chess/">
+          <span class="playground-card-icon" aria-hidden="true">♞</span>
+          <span class="playground-card-copy">
+            <strong>Complete Chess</strong>
+            <small>Play locally or against the computer.</small>
+          </span>
+          <span class="playground-card-arrow" aria-hidden="true">↗</span>
+        </a>
+        <div class="playground-coming" aria-label="More projects coming soon">
+          <span>+</span><small>More experiments soon</small>
+        </div>
+      </div>
+    </aside>
+  </div>
   <footer><a class="wordmark" href="#top"><span class="wordmark-icon">KC</span><span>Ketan Chavan</span></a><span>Oracle HCM Consultant · Pune, India</span><div class="footer-social"><a href="https://www.linkedin.com/in/ketanchavan/" target="_blank" rel="noreferrer">LinkedIn ↗</a><a href="https://github.com/ketankbc" target="_blank" rel="noreferrer">GitHub ↗</a></div><small>© <span id="year"></span> Ketan Chavan</small></footer>
   <script>
     const accentPalettes = [
@@ -81,6 +110,24 @@
     root.style.setProperty('--accent-soft', palette.soft);
     root.style.setProperty('--accent-deep', palette.deep);
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    const playgroundShell = document.getElementById('playgroundShell');
+    const playgroundLauncher = document.getElementById('playgroundLauncher');
+    const playgroundPanel = document.getElementById('playgroundPanel');
+    const playgroundClose = document.getElementById('playgroundClose');
+
+    function setPlayground(open) {
+      playgroundShell.classList.toggle('is-open', open);
+      playgroundLauncher.setAttribute('aria-expanded', String(open));
+      playgroundPanel.setAttribute('aria-hidden', String(!open));
+    }
+
+    playgroundLauncher.addEventListener('click', () => setPlayground(!playgroundShell.classList.contains('is-open')));
+    playgroundClose.addEventListener('click', () => setPlayground(false));
+    document.addEventListener('keydown', event => { if (event.key === 'Escape') setPlayground(false); });
+    document.addEventListener('click', event => {
+      if (playgroundShell.classList.contains('is-open') && !playgroundShell.contains(event.target)) setPlayground(false);
+    });
   </script>
 </body>
 </html>

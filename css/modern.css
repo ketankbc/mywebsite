@@ -16,3 +16,30 @@
 .current-label,.edu-note{color:var(--accent-deep)}
 .date-dot{background:var(--accent)}
 .hero-meta i{background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+
+
+/* Playground launcher */
+.playground-shell{position:fixed;right:24px;bottom:24px;z-index:20;font-family:var(--sans)}
+.playground-launcher{height:48px;padding:0 16px 0 11px;border:1px solid rgba(17,23,26,.15);border-radius:999px;background:var(--ink);color:#fff;display:flex;align-items:center;gap:9px;box-shadow:0 12px 36px rgba(17,23,26,.18);font:700 12px var(--sans);cursor:pointer;transition:transform .2s ease,box-shadow .2s ease}
+.playground-launcher:hover{transform:translateY(-2px);box-shadow:0 16px 42px rgba(17,23,26,.24)}
+.playground-launcher-icon{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--ink);font-size:13px}
+.playground-panel{position:absolute;right:0;bottom:60px;width:min(370px,calc(100vw - 32px));padding:20px;background:#f7f8f5;border:1px solid var(--line);border-radius:12px;box-shadow:0 24px 70px rgba(17,23,26,.2);opacity:0;visibility:hidden;transform:translateY(10px) scale(.98);transform-origin:bottom right;transition:opacity .2s ease,transform .2s ease,visibility .2s}
+.playground-shell.is-open .playground-panel{opacity:1;visibility:visible;transform:translateY(0) scale(1)}
+.playground-panel-head{display:flex;gap:16px;align-items:flex-start;padding-bottom:17px;border-bottom:1px solid var(--line)}
+.playground-kicker{margin:0 0 7px!important;color:var(--accent-deep)!important;font:500 9px var(--mono)!important;letter-spacing:.13em!important}
+.playground-panel h2{margin:0;font-size:25px;letter-spacing:-.055em;line-height:1}
+.playground-panel-head p{margin:8px 0 0;color:#6a7578;font-size:11px;line-height:1.55}
+.playground-close{margin-left:auto;width:30px;height:30px;border:0;border-radius:50%;background:#e8ece6;color:#596467;font-size:20px;line-height:1;cursor:pointer}
+.playground-apps{display:grid;gap:10px;padding-top:14px}
+.playground-card{display:grid;grid-template-columns:48px 1fr auto;gap:12px;align-items:center;padding:13px;border:1px solid #dfe4df;border-radius:8px;background:#fff;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+.playground-card:hover{transform:translateY(-2px);border-color:var(--accent);box-shadow:0 10px 24px rgba(17,23,26,.08)}
+.playground-card-icon{width:48px;height:48px;border-radius:7px;display:grid;place-items:center;background:var(--ink);color:var(--accent);font-size:28px}
+.playground-card-copy{min-width:0;display:block}
+.playground-card-copy strong,.playground-card-copy small{display:block}
+.playground-card-copy strong{font-size:13px;letter-spacing:-.02em}
+.playground-card-copy small{margin-top:4px;color:#778185;font-size:10px;line-height:1.45}
+.playground-card-arrow{color:var(--accent-deep);font-size:16px}
+.playground-coming{min-height:46px;padding:0 13px;border:1px dashed #cfd6d1;border-radius:8px;color:#88928f;display:flex;align-items:center;gap:9px}
+.playground-coming span{font:18px var(--mono);color:var(--accent-deep)}
+.playground-coming small{font:500 10px var(--mono);letter-spacing:.02em}
+@media(max-width:650px){.playground-shell{right:14px;bottom:14px}.playground-launcher{height:44px;padding-right:14px}.playground-launcher-icon{width:25px;height:25px}.playground-panel{right:0;bottom:55px;padding:17px}}
